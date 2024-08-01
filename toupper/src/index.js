@@ -17,14 +17,43 @@ function isNumeric(num) {
   return !isNaN(num)
 }
 
+let users = []
+let toUpperTotal = 0
+
 async function handle_advance(data) {
   console.log("Received advance request data " + JSON.stringify(data));
   
+  //data to be handled
+  const metadata = data["metadata"]
+  const sender = metedata["msg_sender"]
+  const payload = data["payload"]
+  
+  let sentence = hex2str(payload)
+  if (isNumeric(sentence)) {
+      //Add error output
+      const report_req = await fetch(rollup_server + "/report", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ payload: str2hex("sentence is not hex format") }),
+      });
+    return "reject"
+  }
+
+  users.push(sender)
+  toUpperTotal += 1
+
+    //Add success output
+    sentence = sentence.toUpperCase()
   return "accept";
 }
 
 async function handle_inspect(data) {
   console.log("Received inspect request data " + JSON.stringify(data));
+
+  const payload = data["payload"]
+
   return "accept";
 }
 
