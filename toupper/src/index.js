@@ -51,7 +51,7 @@ async function handle_advance(data) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ payload: str2hex("sentence") }),
+      body: JSON.stringify({ payload: str2hex(sentence) }),
     });
   return "accept";
 }
@@ -60,6 +60,24 @@ async function handle_inspect(data) {
   console.log("Received inspect request data " + JSON.stringify(data));
 
   const payload = data["payload"]
+  const route = hex2str(payload)
+
+  let reponseObject
+  if (route === "list") {
+    reponseObject = JSON.stringify({users})
+  } else if (route === "total"){
+    reponseObject = JSON.stringify({toUpperTotal})
+  }else {
+    reponseObject = "route not implimented"
+  }
+
+  const report_req = await fetch(rollup_server + "/report", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payload: str2hex(responseObject) }),
+  });
 
   return "accept";
 }
