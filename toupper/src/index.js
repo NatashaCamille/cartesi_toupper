@@ -46,6 +46,13 @@ async function handle_advance(data) {
 
     //Add success output
     sentence = sentence.toUpperCase()
+    const notice_req = await fetch(rollup_server + "/notice", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ payload: str2hex("sentence") }),
+    });
   return "accept";
 }
 
